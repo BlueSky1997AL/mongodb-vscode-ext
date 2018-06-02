@@ -11,14 +11,14 @@
         "Other"
     ],
     "activationEvents": [
-        "onCommand:extension.sayHello"
+        "onCommand:extension.showMenu"
     ],
     "main": "./out/extension",
     "contributes": {
         "commands": [
             {
-                "command": "extension.sayHello",
-                "title": "Hello World"
+                "command": "extension.showMenu",
+                "title": "Show Main Menu"
             }
         ]
     },
@@ -34,5 +34,9 @@
         "vscode": "^1.1.6",
         "@types/node": "^7.0.43",
         "@types/mocha": "^2.2.42"
+    },
+    "dependencies": {
+        "fs-extra": "^6.0.1",
+        "mongodb-memory-server": "^1.8.0"
     }
 }

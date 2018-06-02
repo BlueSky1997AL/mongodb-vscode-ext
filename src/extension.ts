@@ -1,29 +1,81 @@
 'use strict';
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
-import * as vscode from 'vscode';
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
+import * as vscode from 'vscode';
+import mongodb from './lib/mongodb';
+import { normalize } from 'path';
+
 export function activate(context: vscode.ExtensionContext) {
 
-    // Use the console to output diagnostic information (console.log) and errors (console.error)
-    // This line of code will only be executed once when your extension is activated
-    console.log('Congratulations, your extension "auto-mongodb" is now active!');
+    const showMenuCmd = vscode.commands.registerCommand('extension.showMenu', async () => {
+        let pickItems = [
+            {
+                type: 0,
+                id: 0,
+                label: '开启 MongoDB 数据库',
+                detail: ''
+            }
+        ];
+        if (mongodb.mongoDBInstance) {
+            const dbPort = await mongodb.mongoDBInstance.getPort();
+            const dbPath = await mongodb.mongoDBInstance.getDbPath();
+            pickItems = [
+                {
+                    type: 1,
+                    id: 0,
+                    label: '关闭 MongoDB 数据库',
+                    detail: ''
+                },
+                {
+                    type: 1,
+                    id: 1,
+                    label: '复制数据库连接 URI',
+                    detail: `mongodb://localhost:${dbPort}`
+                },
+                {
+                    type: 1,
+                    id: 2,
+                    label: '复制数据库端口号',
+                    detail: dbPort + ''
+                },
+                {
+                    type: 1,
+                    id: 3,
+                    label: '打开数据库文件所在目录',
+                    detail: normalize(dbPath)
+                }
+            ]
+        }
 
-    // The command has been defined in the package.json file
-    // Now provide the implementation of the command with  registerCommand
-    // The commandId parameter must match the command field in package.json
-    let disposable = vscode.commands.registerCommand('extension.sayHello', () => {
-        // The code you place here will be executed every time your command is executed
+        const pickResult = await vscode.window.showQuickPick(pickItems);
 
-        // Display a message box to the user
-        vscode.window.showInformationMessage('Hello World!');
+        if (pickResult) {
+            if (pickResult.type) {
+                switch (pickResult.id) {
+                    case 0:
+                        mongodb.stop();
+                        break;
+                    case 1:
+                        console.log('复制dbUri');
+                        break;
+                    case 2: 
+                        console.log('端口号');
+                        break;
+                    case 3:
+                        console.log('文件路径');
+                        break;
+                    case 4:
+                        console.log('名称');
+                        break;
+                }
+            } else {
+                mongodb.start();
+            }
+        }
     });
 
-    context.subscriptions.push(disposable);
+    context.subscriptions.push(showMenuCmd);
+
 }
 
-// this method is called when your extension is deactivated
 export function deactivate() {
 }
