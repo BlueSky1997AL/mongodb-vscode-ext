@@ -11,7 +11,8 @@
         "Other"
     ],
     "activationEvents": [
-        "onCommand:extension.showMenu"
+        "onCommand:extension.showMenu",
+        "onCommand:extension.devCommand"
     ],
     "main": "./out/extension",
     "contributes": {
@@ -19,6 +20,10 @@
             {
                 "command": "extension.showMenu",
                 "title": "Show Main Menu"
+            },
+            {
+                "command": "extension.devCommand",
+                "title": "devCmd"
             }
         ]
     },
@@ -36,7 +41,9 @@
         "@types/mocha": "^2.2.42"
     },
     "dependencies": {
+        "clipboardy": "^1.2.3",
         "fs-extra": "^6.0.1",
-        "mongodb-memory-server": "^1.8.0"
+        "mongodb-memory-server": "^1.8.0",
+        "opn": "^5.3.0"
     }
 }

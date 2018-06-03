@@ -1,8 +1,11 @@
 'use strict';
 
 import * as vscode from 'vscode';
-import mongodb from './lib/mongodb';
 import { normalize } from 'path';
+const clipboardy = require('clipboardy');
+const opn = require('opn')
+
+import mongodb from './lib/mongodb';
 
 export function activate(context: vscode.ExtensionContext) {
 
@@ -15,9 +18,10 @@ export function activate(context: vscode.ExtensionContext) {
                 detail: ''
             }
         ];
+        let dbPort, dbPath;
         if (mongodb.mongoDBInstance) {
-            const dbPort = await mongodb.mongoDBInstance.getPort();
-            const dbPath = await mongodb.mongoDBInstance.getDbPath();
+            dbPort = await mongodb.mongoDBInstance.getPort();
+            dbPath = await mongodb.mongoDBInstance.getDbPath();
             pickItems = [
                 {
                     type: 1,
@@ -55,16 +59,13 @@ export function activate(context: vscode.ExtensionContext) {
                         mongodb.stop();
                         break;
                     case 1:
-                        console.log('复制dbUri');
+                        clipboardy.writeSync(`mongodb://localhost:${dbPort}`);
                         break;
                     case 2: 
-                        console.log('端口号');
+                        clipboardy.writeSync(dbPort + '');
                         break;
                     case 3:
-                        console.log('文件路径');
-                        break;
-                    case 4:
-                        console.log('名称');
+                        opn(dbPath);
                         break;
                 }
             } else {
@@ -73,7 +74,51 @@ export function activate(context: vscode.ExtensionContext) {
         }
     });
 
-    context.subscriptions.push(showMenuCmd);
+    const devCmd = vscode.commands.registerCommand('extension.devCommand', async () => {
+        vscode.window.withProgress(
+            {
+                location: vscode.ProgressLocation.Notification,
+                title: '测试进度',
+                cancellable: true
+            },
+            (progress, token) => {
+                token.onCancellationRequested(() => {
+                    console.log('用户取消了操作');
+                });
+
+                progress.report({ increment: 0 });
+
+                setTimeout(() => {
+                    progress.report({
+                        increment: 20,
+                        message: "预设进度1"
+                    })
+                }, 2000);
+
+                setTimeout(() => {
+                    progress.report({
+                        increment: 50,
+                        message: '第二阶段进度'
+                    })
+                }, 3000);
+
+                setTimeout(() => {
+                    progress.report({
+                        increment: 30,
+                        message: '第三阶段预设进度'
+                    })
+                }, 5000);
+
+                return new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        resolve();
+                    }, 5000);
+                });
+            }
+        )
+    })
+
+    context.subscriptions.push(showMenuCmd, devCmd);
 
 }
 
