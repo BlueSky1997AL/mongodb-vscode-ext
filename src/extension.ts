@@ -6,54 +6,45 @@ const clipboardy = require('clipboardy');
 const opn = require('opn')
 
 import mongodb from './lib/mongodb';
+import statusBarItem from './lib/status-bar-item';
 
 export function activate(context: vscode.ExtensionContext) {
 
+    statusBarItem.create({
+        text: '$(database) MongoDB',
+        command: 'extension.showMenu',
+        tooltip: 'MongoDB 数据库未启动，单击启动'
+    })
+
     const showMenuCmd = vscode.commands.registerCommand('extension.showMenu', async () => {
-        let pickItems = [
-            {
-                type: 0,
-                id: 0,
-                label: '开启 MongoDB 数据库',
-                detail: ''
-            }
-        ];
-        let dbPort, dbPath;
         if (mongodb.mongoDBInstance) {
-            dbPort = await mongodb.mongoDBInstance.getPort();
-            dbPath = await mongodb.mongoDBInstance.getDbPath();
-            pickItems = [
+            const dbPort = await mongodb.mongoDBInstance.getPort();
+            const dbPath = await mongodb.mongoDBInstance.getDbPath();
+            const pickItems = [
                 {
-                    type: 1,
                     id: 0,
                     label: '关闭 MongoDB 数据库',
                     detail: ''
                 },
                 {
-                    type: 1,
                     id: 1,
                     label: '复制数据库连接 URI',
                     detail: `mongodb://localhost:${dbPort}`
                 },
                 {
-                    type: 1,
                     id: 2,
                     label: '复制数据库端口号',
                     detail: dbPort + ''
                 },
                 {
-                    type: 1,
                     id: 3,
                     label: '打开数据库文件所在目录',
                     detail: normalize(dbPath)
                 }
             ]
-        }
-
-        const pickResult = await vscode.window.showQuickPick(pickItems);
-
-        if (pickResult) {
-            if (pickResult.type) {
+            
+            const pickResult = await vscode.window.showQuickPick(pickItems);
+            if (pickResult) {
                 switch (pickResult.id) {
                     case 0:
                         mongodb.stop();
@@ -68,10 +59,11 @@ export function activate(context: vscode.ExtensionContext) {
                         opn(dbPath);
                         break;
                 }
-            } else {
-                mongodb.start();
             }
+        } else {
+            mongodb.start();
         }
+
     });
 
     const devCmd = vscode.commands.registerCommand('extension.devCommand', async () => {

@@ -5,7 +5,7 @@ import { homedir } from 'os';
 import { existsSync, mkdirsSync } from 'fs-extra';
 import * as vscode from 'vscode';
 
-let statusBarItem: vscode.StatusBarItem;
+import statusBarItem from './status-bar-item';
 
 class MongoDB {
 
@@ -42,17 +42,22 @@ class MongoDB {
 
     this.mongoDBInstance = mongod;
 
-    statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
-    statusBarItem.command = 'extension.showMenu';
-    statusBarItem.text = `$(database) MongoDB`;
-    statusBarItem.color = '#69b241';
-    statusBarItem.show();
+    statusBarItem.update({
+      text: '$(database) MongoDB',
+      command: 'extension.showMenu',
+      color: '#69b241',
+      tooltip: 'MongoDB 数据库已启动, 单击以查看选项'
+    })
   }
 
   stop() {
     this.mongoDBInstance.stop();
     this.mongoDBInstance = null;
-    statusBarItem.dispose();
+    statusBarItem.update({
+      text: '$(database) MongoDB',
+      command: 'extension.showMenu',
+      tooltip: 'MongoDB 数据库未启动，单击启动'
+    });
   }
 
   get instance() {

@@ -11,8 +11,7 @@
         "Other"
     ],
     "activationEvents": [
-        "onCommand:extension.showMenu",
-        "onCommand:extension.devCommand"
+        "*"
     ],
     "main": "./out/extension",
     "contributes": {
