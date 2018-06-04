@@ -16,6 +16,10 @@ export function activate(context: vscode.ExtensionContext) {
         tooltip: 'MongoDB 数据库未启动，单击启动'
     })
 
+    if (mongodb.runningStatus) {
+        mongodb.start();
+    }
+
     const showMenuCmd = vscode.commands.registerCommand('extension.showMenu', async () => {
         if (mongodb.mongoDBInstance) {
             const dbPort = await mongodb.mongoDBInstance.getPort();
