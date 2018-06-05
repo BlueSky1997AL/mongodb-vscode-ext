@@ -40,9 +40,20 @@
         "@types/mocha": "^2.2.42"
     },
     "dependencies": {
+        "babel-runtime": "^6.26.0",
         "clipboardy": "^1.2.3",
+        "debug": "^3.1.0",
+        "decompress": "^4.2.0",
         "fs-extra": "^6.0.1",
-        "mongodb-memory-server": "^1.8.0",
-        "opn": "^5.3.0"
+        "get-port": "^3.2.0",
+        "getos": "^3.1.0",
+        "lockfile": "^1.0.4",
+        "md5-file": "^4.0.0",
+        "mkdirp": "^0.5.1",
+        "opn": "^5.3.0",
+        "request": "^2.87.0",
+        "request-promise": "^4.2.2",
+        "tmp": "0.0.33",
+        "uuid": "^3.2.1"
     }
 }

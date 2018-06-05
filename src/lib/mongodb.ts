@@ -1,6 +1,6 @@
 'use strict';
 
-import MongoDBMemoryServer from 'mongodb-memory-server';
+import MongoDBMemoryServer from './mongodb-memory-server';
 import { homedir } from 'os';
 import * as vscode from 'vscode';
 import * as path from 'path';
