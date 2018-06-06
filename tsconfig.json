@@ -7,6 +7,7 @@
             "es6"
         ],
         "sourceMap": false,
+        "allowJs": true,
         "rootDir": "src",
         /* Strict Type-Checking Option */
         "strict": false,   /* enable all strict type-checking options */
