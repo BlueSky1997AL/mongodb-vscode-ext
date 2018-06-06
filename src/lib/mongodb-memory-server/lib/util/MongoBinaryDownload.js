@@ -362,10 +362,12 @@ var MongoBinaryDownload = function () {
                           var percentComplete = _ref7.percentComplete;
 
                           if (percentComplete === 100) {
-                            _resolve();
+                            setTimeout(function () {
+                              _resolve();
+                            }, 1000);
                           }
-                          lastPercentComplete = percentComplete;
                           var increment = percentComplete - lastPercentComplete;
+                          lastPercentComplete = percentComplete;
                           progress.report({
                             increment,
                             message: `请稍候, 已下载 ${percentComplete}%`

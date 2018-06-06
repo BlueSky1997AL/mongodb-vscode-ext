@@ -65,7 +65,7 @@
   "peerDependencies": {},
   "scripts": {
     "build": "npm-run-all build:*",
-    "build:cjs": "rimraf lib && babel src --ignore __tests__,__mocks__ -d lib",
+    "build:cjs": "rimraf ../../src/lib/mongodb-memory-server/lib && babel src --ignore __tests__,__mocks__ -d ../../src/lib/mongodb-memory-server/lib",
     "build:flow": "find ./src -name '*.js' -not -path '*/__*' | while read filepath; do cp $filepath `echo $filepath | sed 's/\\/src\\//\\/lib\\//g'`.flow; done",
     "watch": "jest --watch",
     "coverage": "jest --coverage",

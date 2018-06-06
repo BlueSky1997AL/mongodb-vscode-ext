@@ -149,36 +149,35 @@ export default class MongoBinaryDownload {
     return new Promise((resolve, reject) => {
       const fileStream = fs.createWriteStream(tempDownloadLocation);
 
-      try {
-        vscode.window.withProgress(
-          {
-            location: vscode.ProgressLocation.Notification,
-            title: '正在下载所需文件',
-            cancellable: true
-          },
-          (progress, token) => {
-            token.onCancellationRequested(() => {
-              vscode.window.showInformationMessage('已取消操作');
-            });
-            return new Promise((_resolve, _reject) => {
-              let lastPercentComplete = 0;
-              progressEmitter.on('changeProgress', ({ percentComplete }) => {
-                if (percentComplete === 100) {
+      vscode.window.withProgress(
+        {
+          location: vscode.ProgressLocation.Notification,
+          title: '正在下载所需文件',
+          cancellable: true
+        },
+        (progress, token) => {
+          token.onCancellationRequested(() => {
+            vscode.window.showInformationMessage('已取消操作');
+          });
+          return new Promise((_resolve, _reject) => {
+            let lastPercentComplete = 0;
+            progressEmitter.on('changeProgress', ({ percentComplete }) => {
+              if (percentComplete === 100) {
+                setTimeout(() => {
                   _resolve();
-                }
-                lastPercentComplete = percentComplete;
-                const increment = percentComplete - lastPercentComplete;
-                progress.report({
-                  increment,
-                  message: `请稍候, 已下载 ${percentComplete}%`
-                });
+                  vscode.window.showInformationMessage('已下载完成, 即将启动数据库');
+                }, 1500);
+              }
+              const increment = percentComplete - lastPercentComplete;
+              lastPercentComplete = percentComplete;
+              progress.report({
+                increment,
+                message: `请稍候, 已下载 ${percentComplete}%`
               });
             });
-          }
-        );
-      } catch (error) {
-        console.error(error);
-      }
+          });
+        }
+      );
 
       const req: any = https.get(httpOptions, (response: any) => {
         this.dlProgress.current = 0;
