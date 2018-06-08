@@ -9,6 +9,7 @@ var _regenerator = require('babel-runtime/regenerator');
 var _regenerator2 = _interopRequireDefault(_regenerator);
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+/* eslint-disable class-methods-use-this */
 
 var _os = require('os');
 
@@ -58,24 +59,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-/* eslint-disable class-methods-use-this */
-
-var ProgressEmitter = function (_EventEmitter) {
-  _inherits(ProgressEmitter, _EventEmitter);
-
-  function ProgressEmitter() {
-    _classCallCheck(this, ProgressEmitter);
-
-    return _possibleConstructorReturn(this, (ProgressEmitter.__proto__ || Object.getPrototypeOf(ProgressEmitter)).apply(this, arguments));
-  }
-
-  return ProgressEmitter;
-}(_events2.default);
-
-var progressEmitter = new ProgressEmitter();
+var downloadEmitter = new _events2.default();
 
 var MongoBinaryDownload = function () {
   function MongoBinaryDownload(_ref) {
@@ -338,7 +322,7 @@ var MongoBinaryDownload = function () {
     key: 'httpDownload',
     value: function () {
       var _ref6 = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee5(httpOptions, downloadLocation, tempDownloadLocation) {
-        var _this2 = this;
+        var _this = this;
 
         return _regenerator2.default.wrap(function _callee5$(_context5) {
           while (1) {
@@ -347,60 +331,54 @@ var MongoBinaryDownload = function () {
                 return _context5.abrupt('return', new Promise(function (resolve, reject) {
                   var fileStream = _fsExtra2.default.createWriteStream(tempDownloadLocation);
 
-                  try {
-                    vscode.window.withProgress({
-                      location: vscode.ProgressLocation.Notification,
-                      title: '正在下载所需文件',
-                      cancellable: true
-                    }, function (progress, token) {
-                      token.onCancellationRequested(function () {
-                        vscode.window.showInformationMessage('已取消操作');
-                      });
-                      return new Promise(function (_resolve, _reject) {
-                        var lastPercentComplete = 0;
-                        progressEmitter.on('changeProgress', function (_ref7) {
-                          var percentComplete = _ref7.percentComplete;
+                  vscode.window.withProgress({
+                    location: vscode.ProgressLocation.Notification,
+                    title: '正在下载所需文件',
+                    cancellable: false
+                  }, function (progress) {
+                    return new Promise(function (_resolve) {
+                      var lastPercentComplete = 0;
+                      downloadEmitter.on('changeProgress', function (_ref7) {
+                        var percentComplete = _ref7.percentComplete;
 
-                          if (percentComplete === 100) {
-                            setTimeout(function () {
-                              _resolve();
-                            }, 1000);
-                          }
-                          var increment = percentComplete - lastPercentComplete;
-                          lastPercentComplete = percentComplete;
-                          progress.report({
-                            increment,
-                            message: `请稍候, 已下载 ${percentComplete}%`
-                          });
+                        if (percentComplete === 100) {
+                          setTimeout(function () {
+                            _resolve();
+                            vscode.window.showInformationMessage('已下载完成, 即将启动数据库');
+                          }, 1500);
+                        }
+                        var increment = percentComplete - lastPercentComplete;
+                        lastPercentComplete = percentComplete;
+                        progress.report({
+                          increment,
+                          message: `请稍候, 已下载 ${percentComplete}%`
                         });
                       });
                     });
-                  } catch (error) {
-                    console.error(error);
-                  }
+                  });
 
                   var req = _https2.default.get(httpOptions, function (response) {
-                    _this2.dlProgress.current = 0;
-                    _this2.dlProgress.length = parseInt(response.headers['content-length'], 10);
-                    _this2.dlProgress.totalMb = Math.round(_this2.dlProgress.length / 1048576 * 10) / 10;
+                    _this.dlProgress.current = 0;
+                    _this.dlProgress.length = parseInt(response.headers['content-length'], 10);
+                    _this.dlProgress.totalMb = Math.round(_this.dlProgress.length / 1048576 * 10) / 10;
 
                     response.pipe(fileStream);
 
                     fileStream.on('finish', function () {
-                      progressEmitter.emit('changeProgress', { percentComplete: 100 });
+                      downloadEmitter.emit('changeProgress', { percentComplete: 100 });
                       fileStream.close(function () {
                         _fsExtra2.default.renameSync(tempDownloadLocation, downloadLocation);
-                        _this2.debug(`renamed ${tempDownloadLocation} to ${downloadLocation}`);
+                        _this.debug(`renamed ${tempDownloadLocation} to ${downloadLocation}`);
                         resolve(downloadLocation);
                       });
                     });
 
                     response.on('data', function (chunk) {
-                      _this2.printDownloadProgress(chunk);
+                      _this.printDownloadProgress(chunk);
                     });
 
                     req.on('error', function (e) {
-                      _this2.debug('request error:', e);
+                      _this.debug('request error:', e);
                       reject(e);
                     });
                   });
@@ -433,7 +411,7 @@ var MongoBinaryDownload = function () {
       var mbComplete = Math.round(this.dlProgress.current / 1048576 * 10) / 10;
 
       var crReturn = this.platform === 'win32' ? '\x1b[0G' : '\r';
-      progressEmitter.emit('changeProgress', { percentComplete });
+      downloadEmitter.emit('changeProgress', { percentComplete });
       process.stdout.write(`Downloading MongoDB ${this.version}: ${percentComplete} % (${mbComplete}mb ` + `/ ${this.dlProgress.totalMb}mb)${crReturn}`);
     }
   }, {

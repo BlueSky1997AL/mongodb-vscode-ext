@@ -1,9 +1,9 @@
 {
     "name": "auto-mongodb",
-    "displayName": "auto-mongodb",
+    "displayName": "Auto MongoDB",
     "description": "One click to manage MongoDB's running status (without installation or configuration)",
     "version": "0.0.1",
-    "publisher": "Jser",
+    "publisher": "AllenLawrence",
     "engines": {
         "vscode": "^1.23.0"
     },

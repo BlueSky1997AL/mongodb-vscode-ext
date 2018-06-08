@@ -12,8 +12,7 @@ import * as vscode from 'vscode';
 import EventEmitter from 'events';
 import MongoBinaryDownloadUrl from './MongoBinaryDownloadUrl';
 
-class ProgressEmitter extends EventEmitter {}
-const progressEmitter = new ProgressEmitter();
+const downloadEmitter = new EventEmitter();
 
 export type MongoBinaryDownloadOpts = {
   version: string,
@@ -153,15 +152,12 @@ export default class MongoBinaryDownload {
         {
           location: vscode.ProgressLocation.Notification,
           title: '正在下载所需文件',
-          cancellable: true
+          cancellable: false,
         },
-        (progress, token) => {
-          token.onCancellationRequested(() => {
-            vscode.window.showInformationMessage('已取消操作');
-          });
-          return new Promise((_resolve, _reject) => {
+        progress => {
+          return new Promise(_resolve => {
             let lastPercentComplete = 0;
-            progressEmitter.on('changeProgress', ({ percentComplete }) => {
+            downloadEmitter.on('changeProgress', ({ percentComplete }) => {
               if (percentComplete === 100) {
                 setTimeout(() => {
                   _resolve();
@@ -172,7 +168,7 @@ export default class MongoBinaryDownload {
               lastPercentComplete = percentComplete;
               progress.report({
                 increment,
-                message: `请稍候, 已下载 ${percentComplete}%`
+                message: `请稍候, 已下载 ${percentComplete}%`,
               });
             });
           });
@@ -187,7 +183,7 @@ export default class MongoBinaryDownload {
         response.pipe(fileStream);
 
         fileStream.on('finish', () => {
-          progressEmitter.emit('changeProgress', { percentComplete: 100 });
+          downloadEmitter.emit('changeProgress', { percentComplete: 100 });
           fileStream.close(() => {
             fs.renameSync(tempDownloadLocation, downloadLocation);
             this.debug(`renamed ${tempDownloadLocation} to ${downloadLocation}`);
@@ -219,7 +215,7 @@ export default class MongoBinaryDownload {
     const mbComplete = Math.round((this.dlProgress.current / 1048576) * 10) / 10;
 
     const crReturn = this.platform === 'win32' ? '\x1b[0G' : '\r';
-    progressEmitter.emit('changeProgress', { percentComplete });
+    downloadEmitter.emit('changeProgress', { percentComplete });
     process.stdout.write(
       `Downloading MongoDB ${this.version}: ${percentComplete} % (${mbComplete}mb ` +
       `/ ${this.dlProgress.totalMb}mb)${crReturn}`

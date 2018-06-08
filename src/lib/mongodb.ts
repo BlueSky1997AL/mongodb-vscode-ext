@@ -13,7 +13,7 @@ class MongoDB {
   mongoDBInstance = null;
   lockFilePath = path.resolve(__dirname, '../../mongod-lock');
 
-  start(options: any = {}) {
+  async start(options: any = {}) {
     const { port, dbName, dbPath, storageEngine, instanceDebug, binaryVersion, downloadDir, platform, arch, binaryDebug, mongoDebug, autoStart } = options
 
     let finalDbPath = dbPath || `${homedir()}/.mongodb/data`;
@@ -40,7 +40,8 @@ class MongoDB {
       autoStart
     });
 
-    mongod.start();
+    await mongod.start();
+    vscode.window.showInformationMessage('数据库已启动');
 
     this.mongoDBInstance = mongod;
 
@@ -54,8 +55,8 @@ class MongoDB {
     this.updateRunningStatus(true);
   }
 
-  stop() {
-    this.mongoDBInstance.stop();
+  async stop() {
+    await this.mongoDBInstance.stop();
     this.mongoDBInstance = null;
     statusBarItem.update({
       text: '$(database) MongoDB',
