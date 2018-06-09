@@ -3,3 +3,4 @@ node_modules
 .vscode-test/
 *.vsix
 mongod-lock
+src/lib/mongodb-memory-server/lib
