@@ -1,7 +1,8 @@
 {
     "name": "auto-mongodb",
     "displayName": "Auto MongoDB",
-    "description": "One click to manage MongoDB's running status (without installation or configuration)",
+    "icon": "asset/logo.png",
+    "description": "One click to run MongoDB without installation or configuration",
     "version": "0.0.1",
     "publisher": "AllenLawrence",
     "repository": "https://github.com/BlueSky1997AL/mongodb-vscode-ext",
