@@ -1,65 +1,66 @@
-# auto-mongodb README
+# Auto MongoDB
 
-This is the README for your extension "auto-mongodb". After writing up a brief description, we recommend including the following sections.
+![预览](asset/status_bar.png)
 
-## Features
+&#x1F44B; 免去寻找下载资源，安装，配置 MongoDB 数据库的繁琐步骤  
+&#x2728; 打开编辑器，一次点击，即可自动下载安装配置运行 MongoDB 数据库
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+> &#x26A0; **请留意：** 我们使用 Sentry 记录插件错误日志，错误信息会自动发给开发者以解决问题。请放心，错误信息中不含有您的任何个人信息。如果您不期望我们这么做，后续版本中将会加入反馈信息的开关。有了您的支持与反馈我们才能做的更好，也非常欢迎您到[GitHub Issue](https://github.com/BlueSky1997AL/mongodb-vscode-ext/issues)中提交反馈。
 
-For example if there is an image subfolder under your extension project workspace:
+## 开始
 
-\!\[feature X\]\(images/feature-x.png\)
+在 VSCode 中搜索并安装插件后，重载窗口，点击编辑器左下角状态栏 MongoDB 图标即可  
+等待下载安装完成后，图标变为绿色即可连接使用数据库 &#x1F680;  
+> &#x1F340; Tips: 状态栏图标为非绿色时，表示数据库未启动
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+再次单击绿色的数据库图标即可显示相关数据库的操作菜单，如下图
 
-## Requirements
+![主菜单](asset/main_menu.png)
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+## 特征
 
-## Extension Settings
+  + 一次下载即可使用
+  + 一键式简易操作，编辑器状态栏直观显示数据库运行状态
+  + 支持自定义配置（下一版本将会包含），包括：
+    - 二进制文件及数据库文件的存放路径
+    - 数据库版本，平台，架构等
+    - 数据库运行端口，运行模式等
+    - 调试状态
+  + 几乎支持所有平台：macOS / Linux / Windows
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+  > &#x1F43E; Tips：二进制及数据库文件默认存储位置为：`~/.mongodb`
 
-For example:
+## 要求
 
-This extension contributes the following settings:
+  + VSCode 版本不低于 1.23.0
 
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
+## 插件配置项
 
-## Known Issues
+  + 暂无（后续加入）
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+## 已知问题
 
-## Release Notes
+  + 开启多个编辑器窗口时，主窗口可以正常对插件进行操作，其他窗口失效
+  + 如果系统中存在已安装的 MongoDB，插件可能会出错（行为异常）
 
-Users appreciate release notes as you update your extension.
+## ToDos
 
-### 1.0.0
+  + 解决开启多个编辑器窗口时出现的问题
+  + 加入自定义配置功能
+  + 添加错误信息反馈开关
 
-Initial release of ...
+## 发布日志
 
-### 1.0.1
+我们正在努力修复问题并增添新的功能，欢迎到我的[GitHub Issue页](https://github.com/BlueSky1997AL/mongodb-vscode-ext/issues)提出反馈和建议
 
-Fixed issue #.
+### 0.0.1
 
-### 1.1.0
+初始发布版本
 
-Added features X, Y, and Z.
+## 其他
+
+  + [GitHub 仓库](https://github.com/BlueSky1997AL/mongodb-vscode-ext)
 
 -----------------------------------------------------------------------------------------------------------
 
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+**希望你能喜欢它!&#x1F60A;**
