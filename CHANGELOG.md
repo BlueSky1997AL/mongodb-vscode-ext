@@ -1,7 +1,5 @@
-# Change Log
-All notable changes to the "auto-mongodb" extension will be documented in this file.
+# 更新日志
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+## 0.0.1
 
-## [Unreleased]
-- Initial release
+  + 初始发布版本
