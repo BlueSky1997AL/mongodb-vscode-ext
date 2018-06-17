@@ -14,7 +14,9 @@ class MongoDB {
   lockFilePath = path.resolve(__dirname, '../../mongod-lock');
 
   async start(options: any = {}) {
-    const { port, dbName, dbPath, storageEngine, instanceDebug, binaryVersion, downloadDir, platform, arch, binaryDebug, mongoDebug, autoStart } = options
+    const { port = null, dbName = null, dbPath = null, storageEngine = null, instanceDebug = null } = options['instance'] || {};
+
+    const { binaryVersion = null, downloadDir = null, platform = null, arch = null, binaryDebug = null, mongoDebug = null, autoStart = null } = options['binary'] || {};
 
     let finalDbPath = dbPath || `${homedir()}/.mongodb/data`;
     if (!fs.existsSync(finalDbPath)) {

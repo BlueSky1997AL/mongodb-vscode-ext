@@ -22,7 +22,43 @@
                 "command": "extension.showMenu",
                 "title": "Show Main Menu"
             }
-        ]
+        ],
+        "configuration":{
+            "title": "Auto MongoDB",
+            "properties": {
+                "autoMongoDB.instance.port": {
+                    "description": "数据库运行端口。",
+                    "type": "number",
+                    "default": 27017
+                },
+                "autoMongoDB.instance.dbPath": {
+                    "description": "数据库文件存储路径。 默认存储位置: ~/.mongodb/data (POSIX，C:\\Users\\用户名\\.mongodb\\data (Windows)。",
+                    "type": "string"
+                },
+                "autoMongoDB.instance.storageEngine": {
+                    "description": "数据库存储引擎模式。",
+                    "type": "string",
+                    "default": "ephemeralForTest"
+                },
+                "autoMongoDB.binary.version": {
+                    "description": "下载安装数据库可执行文件的版本。",
+                    "type": "string",
+                    "default": "3.4.4"
+                },
+                "autoMongoDB.binary.downloadDir": {
+                    "description": "数据库可执行文件的下载路径。默认存储位置: ~/.mongodb/binaries (POSIX)，C:\\Users\\用户名\\.mongodb\\binaries (Windows)。",
+                    "type": "string"
+                },
+                "autoMongoDB.binary.platform": {
+                    "description": "下载安装数据库可执行文件的平台。注意：我们不推荐您修改此选项，因为我们会自动判断您的安装环境。此选项仅在需要时修改。",
+                    "type": "string"
+                },
+                "autoMongoDB.binary.arch": {
+                    "description": "下载安装数据库可执行文件的架构。注意：我们不推荐您修改此选项，因为我们会自动判断您的安装环境。此选项仅在需要时修改。",
+                    "type": "string"
+                }
+            }
+        }
     },
     "scripts": {
         "vscode:prepublish": "npm run compile",

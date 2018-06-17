@@ -27,8 +27,10 @@ export function activate(context: vscode.ExtensionContext) {
             tooltip: 'MongoDB 数据库未启动，单击启动'
         })
 
+        const launchOptions = vscode.workspace.getConfiguration().get('autoMongoDB');
+
         if (mongodb.runningStatus) {
-            mongodb.start();
+            mongodb.start(launchOptions);
         }
 
         const showMenuCmd = vscode.commands.registerCommand('extension.showMenu', async () => {
@@ -76,7 +78,7 @@ export function activate(context: vscode.ExtensionContext) {
                     }
                 }
             } else {
-                mongodb.start();
+                mongodb.start(launchOptions);
             }
 
         });
