@@ -3,7 +3,7 @@
     "displayName": "Auto MongoDB",
     "icon": "asset/logo.png",
     "description": "One click to run MongoDB without installation or configuration",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "publisher": "AllenLawrence",
     "repository": "https://github.com/BlueSky1997AL/mongodb-vscode-ext",
     "engines": {
@@ -24,7 +24,7 @@
             }
         ],
         "configuration":{
-            "title": "Auto MongoDB",
+            "title": "Auto MongoDB 配置 (修改后需重启数据库)",
             "properties": {
                 "autoMongoDB.instance.port": {
                     "description": "数据库运行端口。",
@@ -32,7 +32,7 @@
                     "default": 27017
                 },
                 "autoMongoDB.instance.dbPath": {
-                    "description": "数据库文件存储路径。 默认存储位置: ~/.mongodb/data (POSIX，C:\\Users\\用户名\\.mongodb\\data (Windows)。",
+                    "description": "数据库文件存储路径。 默认存储位置：~/.mongodb/data (POSIX)，C:\\Users\\用户名\\.mongodb\\data (Windows)。",
                     "type": "string"
                 },
                 "autoMongoDB.instance.storageEngine": {
@@ -46,7 +46,7 @@
                     "default": "3.4.4"
                 },
                 "autoMongoDB.binary.downloadDir": {
-                    "description": "数据库可执行文件的下载路径。默认存储位置: ~/.mongodb/binaries (POSIX)，C:\\Users\\用户名\\.mongodb\\binaries (Windows)。",
+                    "description": "数据库可执行文件的下载路径。默认存储位置：~/.mongodb/binaries (POSIX)，C:\\Users\\用户名\\.mongodb\\binaries (Windows)。",
                     "type": "string"
                 },
                 "autoMongoDB.binary.platform": {

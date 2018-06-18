@@ -21,11 +21,10 @@
 
   + 一次下载即可使用
   + 一键式简易操作，编辑器状态栏直观显示数据库运行状态
-  + 支持自定义配置（下一版本将会包含），包括：
+  + 支持自定义配置，包括：
     - 二进制文件及数据库文件的存放路径
     - 数据库版本，平台，架构等
     - 数据库运行端口，运行模式等
-    - 调试状态
   + 几乎支持所有平台：macOS / Linux / Windows
 
   > &#x1F43E; Tips：二进制及数据库文件默认存储位置为：`~/.mongodb`
@@ -36,7 +35,45 @@
 
 ## 插件配置项
 
-  + 暂无（后续加入）
+在 VSCode 配置 / 工作区配置（ `Ctrl + Comma` ）中添加以下配置项：
+
+  + autoMongoDB.instance.port
+
+    - 数据库运行端口。
+    - 数据类型：number。
+    - 默认值：27017。
+
+  + autoMongoDB.instance.dbPath
+
+    - 数据库文件存储路径。 默认存储位置: ~/.mongodb/data (POSIX)，C:\\Users\\用户名\\.mongodb\\data (Windows)。
+    - 数据类型：string。
+
+  + autoMongoDB.instance.storageEngine
+
+    - 数据库存储引擎模式。
+    - 数据类型：string。
+    - 默认值：ephemeralForTest。
+
+  + autoMongoDB.binary.version
+
+    - 下载安装数据库可执行文件的版本。
+    - 数据类型：string。
+    - 默认值：3.4.4。
+
+  + autoMongoDB.binary.downloadDir
+
+    - 数据库可执行文件的下载路径。默认存储位置: ~/.mongodb/binaries (POSIX)，C:\\Users\\用户名\\.mongodb\\binaries (Windows)。
+    - 数据类型：string。
+
+  + autoMongoDB.binary.platform
+
+    - 下载安装数据库可执行文件的平台。注意：我们不推荐您修改此选项，因为我们会自动判断您的安装环境。此选项仅在需要时修改。
+    - 数据类型：string。
+
+  + autoMongoDB.binary.arch
+
+    - 下载安装数据库可执行文件的架构。注意：我们不推荐您修改此选项，因为我们会自动判断您的安装环境。此选项仅在需要时修改。
+    - 数据类型：string。
 
 ## 已知问题
 
@@ -46,12 +83,15 @@
 ## ToDos
 
   + 解决开启多个编辑器窗口时出现的问题
-  + 加入自定义配置功能
   + 添加错误信息反馈开关
 
 ## 发布日志
 
 我们正在努力修复问题并增添新的功能，欢迎到我的[GitHub Issue页](https://github.com/BlueSky1997AL/mongodb-vscode-ext/issues)提出反馈和建议
+
+### 0.1.0
+
+  + 添加配置功能，支持自定义程序及数据库的参数配置
 
 ### 0.0.1
 
